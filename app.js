@@ -9,7 +9,7 @@ let isValid = true;
 
 while (true) {
   whatToDo = prompt(
-    "Tell me what to do: '1.Add transaction (ADD)' , '2.List transactions (LIST)' , '3.Exit(EXIT)'"
+    "Tell me what to do: '1.Add transaction (ADD)' , '2.List transactions (LIST)' ,'3.Balance (BALANCE)' ,'4.Total (TOTAL)' , '5.Exit(EXIT)'"
   )
     .trim()
     .toUpperCase();
@@ -72,6 +72,36 @@ while (true) {
   } else if (whatToDo === "EXIT") {
     alert("You exited the app");
     break;
+  } else if (whatToDo === "TOTAL") {
+    let totalIncome = 0;
+    let totalExpense = 0;
+    for (let i = 0; i < transactions.length; i++) {
+      if (transactions[i].type === "income") {
+        totalIncome += transactions[i].amount;
+      } else {
+        totalExpense += transactions[i].amount;
+      }
+    }
+    console.log(
+      "Your Total icome is: " +
+        totalIncome +
+        "\n" +
+        "Your Total expenses are: " +
+        totalExpense
+    );
+  } else if (whatToDo === "BALANCE") {
+    let totalIncome = 0;
+    let totalExpense = 0;
+    for (let i = 0; i < transactions.length; i++) {
+      if (transactions[i].type === "income") {
+        totalIncome += transactions[i].amount;
+      } else {
+        totalExpense += transactions[i].amount;
+      }
+    }
+    let totalBalance = 0;
+    totalBalance = totalIncome - totalExpense;
+    console.log("Your Balance is: " + totalBalance);
   } else {
     alert("Invalid option");
   }
