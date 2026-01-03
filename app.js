@@ -6,10 +6,12 @@ let amount = 0;
 let category = "";
 let note = "";
 let isValid = true;
+let deleteId = 0;
+let found = false;
 
 while (true) {
   whatToDo = prompt(
-    "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nEXIT - Exit\n\nYour choice:"
+    "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nDELETE - Delete a transaction\nEXIT - Exit\n\nYour choice:"
   )
     .trim()
     .toUpperCase();
@@ -44,6 +46,9 @@ while (true) {
         isValid = false;
         continue;
       }
+
+      //Category needs to take specific values from an array (food, rent, transport, fuel, utilities, entertainment, health, other)
+
       category = prompt(
         "Expense category (food, rent, transport, fuel, utilities, entertainment, health, other):"
       )
@@ -55,7 +60,7 @@ while (true) {
         continue;
       }
     } else {
-      alert("Invalid amount. Please enter a number greater than 0.");
+      alert("Invalid type. Please enter 'income' or 'expense'.");
       isValid = false;
     }
     if (isValid) {
@@ -117,7 +122,25 @@ while (true) {
     let totalBalance = 0;
     totalBalance = totalIncome - totalExpense;
     console.log("=== Balance ===\nBalance: " + totalBalance);
+  } else if (whatToDo === "DELETE") {
+    deleteId = Number(prompt("Enter transaction id to delete:"));
+    if (deleteId <= 0 || isNaN(deleteId)) {
+      alert("Plese give a valid ID");
+      continue;
+    }
+    for (let i = 0; i < transactions.length; i++) {
+      if (transactions[i].id === deleteId) {
+        transactions.splice(i, 1);
+        found = true;
+        break;
+      }
+    }
+    if (found) {
+      alert("Transaction #" + deleteId + " deleted");
+    } else {
+      alert("Invalid ID number");
+    }
   } else {
-    alert("Invalid option. Type: ADD, LIST, TOTAL, BALANCE, or EXIT.");
+    alert("Invalid option. Type: ADD, LIST, TOTAL, BALANCE, DELETE or EXIT.");
   }
 }
