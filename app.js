@@ -9,45 +9,60 @@ let isValid = true;
 
 while (true) {
   whatToDo = prompt(
-    "Tell me what to do: '1.Add transaction (ADD)' , '2.List transactions (LIST)' ,'3.Balance (BALANCE)' ,'4.Total (TOTAL)' , '5.Exit(EXIT)'"
+    "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nEXIT - Exit\n\nYour choice:"
   )
     .trim()
     .toUpperCase();
 
   if (whatToDo === "ADD") {
     isValid = true;
-    type = prompt("What type do you want to add? ('income' or 'expense')")
-      .trim()
-      .toLowerCase();
+    type = prompt("Transaction type (income / expense):").trim().toLowerCase();
     if (type === "income") {
-      amount = Number(prompt("Write the amount you gained"));
+      amount = Number(prompt("Enter amount (positive number):"));
       if (amount <= 0 || isNaN(amount)) {
-        alert("you gave a negative number or zero");
-        isValid = false;
-        continue;
-      }
-      category = "income";
-    } else if (type === "expense") {
-      amount = Number(prompt("Write the amount you spend"));
-      if (amount <= 0 || isNaN(amount)) {
-        alert("you gave a negative number or zero");
+        alert("Invalid amount. Please enter a number greater than 0.");
         isValid = false;
         continue;
       }
       category = prompt(
-        "What category did you spend? (food, rent, gifts, fuel, other)"
-      ).trim();
+        "Please select one of the following (salary/passive income/other)"
+      )
+        .trim()
+        .toLowerCase();
+      if (
+        category !== "salary" &&
+        category !== "passive income" &&
+        category !== "other"
+      ) {
+        alert("Invalid Category. Please enter one of the given category");
+        continue;
+      }
+    } else if (type === "expense") {
+      amount = Number(prompt("Enter amount (positive number):"));
+      if (amount <= 0 || isNaN(amount)) {
+        alert("Invalid amount. Please enter a number greater than 0.");
+        isValid = false;
+        continue;
+      }
+      category = prompt(
+        "Expense category (food, rent, transport, fuel, utilities, entertainment, health, other):"
+      )
+        .trim()
+        .toLowerCase();
       if (category === "") {
-        alert("You didnt specify the category");
+        alert("Category is required. Please enter a valid expense category.");
         isValid = false;
         continue;
       }
     } else {
-      alert("Invalid value.");
+      alert("Invalid amount. Please enter a number greater than 0.");
       isValid = false;
     }
     if (isValid) {
-      note = prompt("Do you want to leave a note?");
+      note = prompt("Optional note (press OK to skip):").trim();
+      if (note === "") {
+        note = "-";
+      }
       nextID += 1;
       let transaction = {
         type: type,
@@ -61,16 +76,17 @@ while (true) {
     }
   } else if (whatToDo === "LIST") {
     if (transactions.length === 0) {
-      console.log("No transactions yet");
+      console.log("=== Transactions ===\nNo transactions yet.");
     } else {
+      console.log("=== Transactions ===");
       for (let i = 0; i < transactions.length; i++) {
         console.log(
-          `${transactions[i].id}. ${transactions[i].type}, ${transactions[i].amount}, ${transactions[i].category}, ${transactions[i].note} `
+          `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
         );
       }
     }
   } else if (whatToDo === "EXIT") {
-    alert("You exited the app");
+    alert("Goodbye! Your session has ended.");
     break;
   } else if (whatToDo === "TOTAL") {
     let totalIncome = 0;
@@ -83,10 +99,9 @@ while (true) {
       }
     }
     console.log(
-      "Your Total icome is: " +
+      "=== Totals ===\nTotal income: " +
         totalIncome +
-        "\n" +
-        "Your Total expenses are: " +
+        "\nTotal expense: " +
         totalExpense
     );
   } else if (whatToDo === "BALANCE") {
@@ -101,8 +116,8 @@ while (true) {
     }
     let totalBalance = 0;
     totalBalance = totalIncome - totalExpense;
-    console.log("Your Balance is: " + totalBalance);
+    console.log("=== Balance ===\nBalance: " + totalBalance);
   } else {
-    alert("Invalid option");
+    alert("Invalid option. Type: ADD, LIST, TOTAL, BALANCE, or EXIT.");
   }
 }
