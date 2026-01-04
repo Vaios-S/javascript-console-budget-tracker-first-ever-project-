@@ -7,7 +7,6 @@ let category = "";
 let note = "";
 let isValid = true;
 let deleteId = 0;
-let found = false;
 
 while (true) {
   whatToDo = prompt(
@@ -106,8 +105,10 @@ while (true) {
     console.log(
       "=== Totals ===\nTotal income: " +
         totalIncome +
+        "€" +
         "\nTotal expense: " +
-        totalExpense
+        totalExpense +
+        "€"
     );
   } else if (whatToDo === "BALANCE") {
     let totalIncome = 0;
@@ -121,24 +122,30 @@ while (true) {
     }
     let totalBalance = 0;
     totalBalance = totalIncome - totalExpense;
-    console.log("=== Balance ===\nBalance: " + totalBalance);
+    console.log("=== Balance ===\nBalance: " + totalBalance + "€");
   } else if (whatToDo === "DELETE") {
-    deleteId = Number(prompt("Enter transaction id to delete:"));
-    if (deleteId <= 0 || isNaN(deleteId)) {
-      alert("Plese give a valid ID");
+    let found = false;
+    if (transactions.length === 0) {
+      alert("No transactions to delete");
       continue;
-    }
-    for (let i = 0; i < transactions.length; i++) {
-      if (transactions[i].id === deleteId) {
-        transactions.splice(i, 1);
-        found = true;
-        break;
-      }
-    }
-    if (found) {
-      alert("Transaction #" + deleteId + " deleted");
     } else {
-      alert("Invalid ID number");
+      deleteId = Number(prompt("Enter transaction id to delete:"));
+      if (deleteId <= 0 || isNaN(deleteId)) {
+        alert("Plese give a valid ID");
+        continue;
+      }
+      for (let i = 0; i < transactions.length; i++) {
+        if (transactions[i].id === deleteId) {
+          transactions.splice(i, 1);
+          found = true;
+          break;
+        }
+      }
+      if (found) {
+        alert("Transaction #" + deleteId + " deleted");
+      } else {
+        alert("Invalid ID number");
+      }
     }
   } else {
     alert("Invalid option. Type: ADD, LIST, TOTAL, BALANCE, DELETE or EXIT.");
