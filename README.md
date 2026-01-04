@@ -11,3 +11,8 @@ Features:
 - Input validation via prompts
 
 This project is part of my JavaScript learning journey.
+
+## Latest Updates
+
+- Added DELETE option to remove transactions by id
+- Improved validation, messages, and overall console UX
