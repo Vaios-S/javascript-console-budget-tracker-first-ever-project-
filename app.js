@@ -10,7 +10,7 @@ let deleteId = 0;
 
 while (true) {
   whatToDo = prompt(
-    "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nDELETE - Delete a transaction\nEXIT - Exit\n\nYour choice:"
+    "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nDELETE - Delete a transaction\nSEARCH - Search transactions\nEXIT - Exit\n\nYour choice:"
   )
     .trim()
     .toUpperCase();
@@ -145,6 +145,40 @@ while (true) {
         alert("Transaction #" + deleteId + " deleted");
       } else {
         alert("Invalid ID number");
+      }
+    }
+  } else if (whatToDo === "SEARCH") {
+    let searchBy = "";
+    let searchBy2 = "";
+    if (transactions.length === 0) {
+      alert("No transactions to search");
+      continue;
+    } else {
+      searchBy = prompt("Search by: Type or Category?").trim().toLowerCase();
+      if (searchBy === "type") {
+        searchBy2 = prompt("Search by: Income or Expense?")
+          .trim()
+          .toLowerCase();
+        if (searchBy2 === "income") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].type === "income") {
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "expense") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].type === "expense") {
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        }
+      } else if (searchBy === "category") {
+      } else {
+        alert("Invalid input");
       }
     }
   } else {
