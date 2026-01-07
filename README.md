@@ -5,6 +5,7 @@ JavaScript Console Budget Tracker
 A simple console-based budget tracker built with vanilla JavaScript.
 
 Features:
+
 - Add income and expense transactions
 - List all transactions
 - View totals and balance
@@ -14,5 +15,5 @@ This project is part of my JavaScript learning journey.
 
 ## Latest Updates
 
-- Added DELETE option to remove transactions by id
+- Added SEARCH feature to filter transactions by type or category
 - Improved validation, messages, and overall console UX
