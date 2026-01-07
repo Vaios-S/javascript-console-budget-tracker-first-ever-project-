@@ -177,6 +177,121 @@ while (true) {
           }
         }
       } else if (searchBy === "category") {
+        found = false;
+        searchBy2 = prompt(
+          "INCOME:\nSalary\nPassive income\nOther_inc\n\nEXPENSE:\nFood\nRent\nTransport\nFuel\nUtilities\nEntertaiment\nHealth\nOther_exp"
+        )
+          .trim()
+          .toLowerCase();
+        if (searchBy2 === "salary") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].category === "salary") {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "passive income") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].category === "passive income") {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "other_inc") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (
+              transactions[i].category === "other" &&
+              transactions[i].type === "income"
+            ) {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "food") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].category === "food") {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "rent") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].category === "rent") {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "transport") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].category === "transport") {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "fuel") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].category === "fuel") {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "utilities") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].category === "utilities") {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "entertaiment") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].category === "entertaiment") {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "health") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].category === "health") {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        } else if (searchBy2 === "other_exp") {
+          for (let i = 0; i < transactions.length; i++) {
+            if (
+              transactions[i].category === "other" &&
+              transactions[i].type === "expense"
+            ) {
+              found = true;
+              console.log(
+                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
+              );
+            }
+          }
+        }
+        if (!found) {
+          alert("No matching transactions found");
+        }
       } else {
         alert("Invalid input");
       }
