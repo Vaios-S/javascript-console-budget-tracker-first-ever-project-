@@ -8,9 +8,34 @@ let note = "";
 let isValid = true;
 let deleteId = 0;
 
+function calculateTotals(transactions) {
+  let totalIncome = 0;
+  let totalExpense = 0;
+
+  for (let i = 0; i < transactions.length; i++) {
+    if (transactions[i].type === "income") {
+      totalIncome += transactions[i].amount;
+    } else if (transactions[i].type === "expense") {
+      totalExpense += transactions[i].amount;
+    }
+  }
+
+  let balance = totalIncome - totalExpense;
+
+  return {
+    totalIncome: totalIncome,
+    totalExpense: totalExpense,
+    totalBalance: balance,
+  };
+}
+
+function formatTransaction(transaction) {
+  return `${transaction.id}. ${transaction.type} | ${transaction.amount}€ | ${transaction.category} | ${transaction.note}`;
+}
+
 while (true) {
   whatToDo = prompt(
-    "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nDELETE - Delete a transaction\nSEARCH - Search transactions\nEXIT - Exit\n\nYour choice:"
+    "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nDELETE - Delete a transaction\nSEARCH - Search transactions\nEXIT - Exit\n\nYour choice:",
   )
     .trim()
     .toUpperCase();
@@ -26,7 +51,7 @@ while (true) {
         continue;
       }
       category = prompt(
-        "Please select one of the following (salary/passive income/other)"
+        "Please select one of the following (salary/passive income/other)",
       )
         .trim()
         .toLowerCase();
@@ -49,7 +74,7 @@ while (true) {
       //Category needs to take specific values from an array (food, rent, transport, fuel, utilities, entertainment, health, other)
 
       category = prompt(
-        "Expense category (food, rent, transport, fuel, utilities, entertainment, health, other):"
+        "Expense category (food, rent, transport, fuel, utilities, entertainment, health, other):",
       )
         .trim()
         .toLowerCase();
@@ -84,45 +109,25 @@ while (true) {
     } else {
       console.log("=== Transactions ===");
       for (let i = 0; i < transactions.length; i++) {
-        console.log(
-          `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-        );
+        console.log(formatTransaction(transactions[i]));
       }
     }
   } else if (whatToDo === "EXIT") {
     alert("Goodbye! Your session has ended.");
     break;
   } else if (whatToDo === "TOTAL") {
-    let totalIncome = 0;
-    let totalExpense = 0;
-    for (let i = 0; i < transactions.length; i++) {
-      if (transactions[i].type === "income") {
-        totalIncome += transactions[i].amount;
-      } else {
-        totalExpense += transactions[i].amount;
-      }
-    }
+    let totals = calculateTotals(transactions);
     console.log(
       "=== Totals ===\nTotal income: " +
-        totalIncome +
+        totals.totalIncome +
         "€" +
         "\nTotal expense: " +
-        totalExpense +
-        "€"
+        totals.totalExpense +
+        "€",
     );
   } else if (whatToDo === "BALANCE") {
-    let totalIncome = 0;
-    let totalExpense = 0;
-    for (let i = 0; i < transactions.length; i++) {
-      if (transactions[i].type === "income") {
-        totalIncome += transactions[i].amount;
-      } else {
-        totalExpense += transactions[i].amount;
-      }
-    }
-    let totalBalance = 0;
-    totalBalance = totalIncome - totalExpense;
-    console.log("=== Balance ===\nBalance: " + totalBalance + "€");
+    let totals = calculateTotals(transactions);
+    console.log("=== Balance ===\nBalance: " + totals.totalBalance + "€");
   } else if (whatToDo === "DELETE") {
     let found = false;
     if (transactions.length === 0) {
@@ -162,24 +167,20 @@ while (true) {
         if (searchBy2 === "income") {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].type === "income") {
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "expense") {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].type === "expense") {
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         }
       } else if (searchBy === "category") {
         found = false;
         searchBy2 = prompt(
-          "INCOME:\nSalary\nPassive income\nOther_inc\n\nEXPENSE:\nFood\nRent\nTransport\nFuel\nUtilities\nEntertaiment\nHealth\nOther_exp"
+          "INCOME:\nSalary\nPassive income\nOther_inc\n\nEXPENSE:\nFood\nRent\nTransport\nFuel\nUtilities\nEntertainment\nHealth\nOther_exp",
         )
           .trim()
           .toLowerCase();
@@ -187,18 +188,14 @@ while (true) {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].category === "salary") {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "passive income") {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].category === "passive income") {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "other_inc") {
@@ -208,72 +205,56 @@ while (true) {
               transactions[i].type === "income"
             ) {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "food") {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].category === "food") {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "rent") {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].category === "rent") {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "transport") {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].category === "transport") {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "fuel") {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].category === "fuel") {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "utilities") {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].category === "utilities") {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
-        } else if (searchBy2 === "entertaiment") {
+        } else if (searchBy2 === "entertainment") {
           for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "entertaiment") {
+            if (transactions[i].category === "entertainment") {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "health") {
           for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].category === "health") {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         } else if (searchBy2 === "other_exp") {
@@ -283,9 +264,7 @@ while (true) {
               transactions[i].type === "expense"
             ) {
               found = true;
-              console.log(
-                `${transactions[i].id}. ${transactions[i].type}  |  ${transactions[i].amount}€  |  ${transactions[i].category}  |  ${transactions[i].note} `
-              );
+              console.log(formatTransaction(transactions[i]));
             }
           }
         }
