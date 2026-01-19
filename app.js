@@ -33,6 +33,26 @@ function formatTransaction(transaction) {
   return `${transaction.id}. ${transaction.type} | ${transaction.amount}€ | ${transaction.category} | ${transaction.note}`;
 }
 
+function searchByType(transaction, type) {
+  const results = [];
+  for (let i = 0; i < transaction.length; i++) {
+    if (transaction[i].type === type) {
+      results.push(transaction[i]);
+    }
+  }
+  return results;
+}
+
+function searchByCategory(transaction, category) {
+  const results = [];
+  for (let i = 0; i < transaction.length; i++) {
+    if (transaction[i].category === category) {
+      results.push(transaction[i]);
+    }
+  }
+  return results;
+}
+
 while (true) {
   whatToDo = prompt(
     "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nDELETE - Delete a transaction\nSEARCH - Search transactions\nEXIT - Exit\n\nYour choice:",
@@ -164,112 +184,27 @@ while (true) {
         searchBy2 = prompt("Search by: Income or Expense?")
           .trim()
           .toLowerCase();
-        if (searchBy2 === "income") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].type === "income") {
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "expense") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].type === "expense") {
-              console.log(formatTransaction(transactions[i]));
-            }
+        let results = searchByType(transactions, searchBy2);
+        if (results.length === 0) {
+          alert("No matching transactions found");
+        } else {
+          for (let i = 0; i < results.length; i++) {
+            console.log(formatTransaction(results[i]));
           }
         }
       } else if (searchBy === "category") {
-        found = false;
         searchBy2 = prompt(
-          "INCOME:\nSalary\nPassive income\nOther_inc\n\nEXPENSE:\nFood\nRent\nTransport\nFuel\nUtilities\nEntertainment\nHealth\nOther_exp",
+          "INCOME:\nSalary\nPassive income\nOther\n\nEXPENSE:\nFood\nRent\nTransport\nFuel\nUtilities\nEntertainment\nHealth\nOther",
         )
           .trim()
           .toLowerCase();
-        if (searchBy2 === "salary") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "salary") {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "passive income") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "passive income") {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "other_inc") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (
-              transactions[i].category === "other" &&
-              transactions[i].type === "income"
-            ) {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "food") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "food") {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "rent") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "rent") {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "transport") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "transport") {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "fuel") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "fuel") {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "utilities") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "utilities") {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "entertainment") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "entertainment") {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "health") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (transactions[i].category === "health") {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        } else if (searchBy2 === "other_exp") {
-          for (let i = 0; i < transactions.length; i++) {
-            if (
-              transactions[i].category === "other" &&
-              transactions[i].type === "expense"
-            ) {
-              found = true;
-              console.log(formatTransaction(transactions[i]));
-            }
-          }
-        }
-        if (!found) {
+        let results = searchByCategory(transactions, searchBy2);
+        if (results.length === 0) {
           alert("No matching transactions found");
+        } else {
+          for (let i = 0; i < results.length; i++) {
+            console.log(formatTransaction(results[i]));
+          }
         }
       } else {
         alert("Invalid input");
