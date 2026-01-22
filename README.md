@@ -46,7 +46,6 @@ into a DOM-based and React application.
 
 ## 📌 Next steps
 
-- Refactor search logic into pure functions
 - Reduce global variables
 - Add DOM-based UI (HTML & CSS)
 - Persist data using localStorage

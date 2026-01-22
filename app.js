@@ -1,4 +1,4 @@
-let transactions = [];
+const transactions = [];
 let whatToDo = "";
 let nextID = 0;
 let type = "";
@@ -7,6 +7,22 @@ let category = "";
 let note = "";
 let isValid = true;
 let deleteId = 0;
+
+const incomeCategories = ["Salary", "Passive Income", "Other"];
+
+const expenseCategories = [
+  "Housing",
+  "Utilities",
+  "Food",
+  "Eating Out",
+  "Transportation",
+  "Bills",
+  "Subscriptions",
+  "Health",
+  "Entertainment",
+  "Shopping",
+  "Other",
+];
 
 function calculateTotals(transactions) {
   let totalIncome = 0;
@@ -53,6 +69,24 @@ function searchByCategory(transaction, category) {
   return results;
 }
 
+function validCategoriesInc(userInput) {
+  for (let i = 0; i < incomeCategories.length; i++) {
+    if (userInput === incomeCategories[i].trim().toLowerCase()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function validCategoriesExp(userInput) {
+  for (let i = 0; i < expenseCategories.length; i++) {
+    if (userInput === expenseCategories[i].trim().toLowerCase()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 while (true) {
   whatToDo = prompt(
     "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nDELETE - Delete a transaction\nSEARCH - Search transactions\nEXIT - Exit\n\nYour choice:",
@@ -71,15 +105,11 @@ while (true) {
         continue;
       }
       category = prompt(
-        "Please select one of the following (salary/passive income/other)",
+        `Please select one of the following (${incomeCategories.join("/ ")})`,
       )
         .trim()
         .toLowerCase();
-      if (
-        category !== "salary" &&
-        category !== "passive income" &&
-        category !== "other"
-      ) {
+      if (!validCategoriesInc(category)) {
         alert("Invalid Category. Please enter one of the given category");
         continue;
       }
@@ -91,14 +121,12 @@ while (true) {
         continue;
       }
 
-      //Category needs to take specific values from an array (food, rent, transport, fuel, utilities, entertainment, health, other)
-
       category = prompt(
-        "Expense category (food, rent, transport, fuel, utilities, entertainment, health, other):",
+        `Please select one of the following (${expenseCategories.join("/ ")})`,
       )
         .trim()
         .toLowerCase();
-      if (category === "") {
+      if (!validCategoriesExp(category)) {
         alert("Category is required. Please enter a valid expense category.");
         isValid = false;
         continue;
@@ -113,7 +141,7 @@ while (true) {
         note = "-";
       }
       nextID += 1;
-      let transaction = {
+      const transaction = {
         type: type,
         amount: amount,
         category: category,
@@ -194,7 +222,7 @@ while (true) {
         }
       } else if (searchBy === "category") {
         searchBy2 = prompt(
-          "INCOME:\nSalary\nPassive income\nOther\n\nEXPENSE:\nFood\nRent\nTransport\nFuel\nUtilities\nEntertainment\nHealth\nOther",
+          `INCOME:\n${incomeCategories.join("\n")}\n\nEXPENSE:\n${expenseCategories.join("\n")}`,
         )
           .trim()
           .toLowerCase();
