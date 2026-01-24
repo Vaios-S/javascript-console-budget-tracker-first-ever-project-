@@ -1,12 +1,5 @@
 const transactions = [];
-let whatToDo = "";
 let nextID = 0;
-let type = "";
-let amount = 0;
-let category = "";
-let note = "";
-let isValid = true;
-let deleteId = 0;
 
 const incomeCategories = ["Salary", "Passive Income", "Other"];
 
@@ -49,108 +42,87 @@ function formatTransaction(transaction) {
   return `${transaction.id}. ${transaction.type} | ${transaction.amount}€ | ${transaction.category} | ${transaction.note}`;
 }
 
-function searchByType(transaction, type) {
+function searchByType(transactions, type) {
   const results = [];
-  for (let i = 0; i < transaction.length; i++) {
-    if (transaction[i].type === type) {
-      results.push(transaction[i]);
+  for (let i = 0; i < transactions.length; i++) {
+    if (transactions[i].type === type) {
+      results.push(transactions[i]);
     }
   }
   return results;
 }
 
-function searchByCategory(transaction, category) {
+function searchByCategory(transactions, category) {
   const results = [];
-  for (let i = 0; i < transaction.length; i++) {
-    if (transaction[i].category === category) {
-      results.push(transaction[i]);
+  for (let i = 0; i < transactions.length; i++) {
+    if (transactions[i].category === category) {
+      results.push(transactions[i]);
     }
   }
   return results;
 }
 
-function validCategoriesInc(userInput) {
+function validCategories(userInput) {
   for (let i = 0; i < incomeCategories.length; i++) {
-    if (userInput === incomeCategories[i].trim().toLowerCase()) {
+    if (
+      userInput === incomeCategories[i].trim().toLowerCase() ||
+      userInput === expenseCategories[i].trim().toLowerCase()
+    ) {
       return true;
     }
   }
   return false;
 }
 
-function validCategoriesExp(userInput) {
-  for (let i = 0; i < expenseCategories.length; i++) {
-    if (userInput === expenseCategories[i].trim().toLowerCase()) {
-      return true;
-    }
+function add(categories) {
+  const amount = Number(prompt("Enter amount (positive number):"));
+  if (amount <= 0 || isNaN(amount)) {
+    alert("Invalid amount. Please enter a number greater than 0.");
+    return false;
   }
-  return false;
+  const category = prompt(
+    `Please select one of the following (${categories.join("/ ")})`,
+  )
+    .trim()
+    .toLowerCase();
+  if (!validCategories(category)) {
+    alert("Invalid Category. Please enter one of the given category");
+    return false;
+  }
+  let note = prompt("Optional note (press OK to skip):").trim();
+  if (note === "") note = "-";
+  return { amount: amount, category: category, note: note };
 }
 
 while (true) {
-  whatToDo = prompt(
+  let whatToDo = prompt(
     "=== Budget Tracker ===\nType one option:\nADD - Add a transaction\nLIST - List all transactions\nTOTAL - Show totals (income/expense)\nBALANCE - Show current balance\nDELETE - Delete a transaction\nSEARCH - Search transactions\nEXIT - Exit\n\nYour choice:",
   )
     .trim()
     .toUpperCase();
 
   if (whatToDo === "ADD") {
-    isValid = true;
-    type = prompt("Transaction type (income / expense):").trim().toLowerCase();
-    if (type === "income") {
-      amount = Number(prompt("Enter amount (positive number):"));
-      if (amount <= 0 || isNaN(amount)) {
-        alert("Invalid amount. Please enter a number greater than 0.");
-        isValid = false;
-        continue;
-      }
-      category = prompt(
-        `Please select one of the following (${incomeCategories.join("/ ")})`,
-      )
-        .trim()
-        .toLowerCase();
-      if (!validCategoriesInc(category)) {
-        alert("Invalid Category. Please enter one of the given category");
-        continue;
-      }
-    } else if (type === "expense") {
-      amount = Number(prompt("Enter amount (positive number):"));
-      if (amount <= 0 || isNaN(amount)) {
-        alert("Invalid amount. Please enter a number greater than 0.");
-        isValid = false;
-        continue;
-      }
-
-      category = prompt(
-        `Please select one of the following (${expenseCategories.join("/ ")})`,
-      )
-        .trim()
-        .toLowerCase();
-      if (!validCategoriesExp(category)) {
-        alert("Category is required. Please enter a valid expense category.");
-        isValid = false;
-        continue;
-      }
-    } else {
+    let type = prompt("Transaction type (income / expense):")
+      .trim()
+      .toLowerCase();
+    let categories = null;
+    if (type === "income") categories = incomeCategories;
+    else if (type === "expense") categories = expenseCategories;
+    else {
       alert("Invalid type. Please enter 'income' or 'expense'.");
-      isValid = false;
+      continue;
     }
-    if (isValid) {
-      note = prompt("Optional note (press OK to skip):").trim();
-      if (note === "") {
-        note = "-";
-      }
-      nextID += 1;
-      const transaction = {
-        type: type,
-        amount: amount,
-        category: category,
-        note: note,
-        id: nextID,
-      };
+    const details = add(categories);
+    if (!details) continue;
 
-      transactions.push(transaction);
-    }
+    nextID += 1;
+    const transaction = {
+      type: type,
+      ...details,
+      id: nextID,
+    };
+
+    transactions.push(transaction);
   } else if (whatToDo === "LIST") {
     if (transactions.length === 0) {
       console.log("=== Transactions ===\nNo transactions yet.");
@@ -182,7 +154,7 @@ while (true) {
       alert("No transactions to delete");
       continue;
     } else {
-      deleteId = Number(prompt("Enter transaction id to delete:"));
+      let deleteId = Number(prompt("Enter transaction id to delete:"));
       if (deleteId <= 0 || isNaN(deleteId)) {
         alert("Plese give a valid ID");
         continue;
